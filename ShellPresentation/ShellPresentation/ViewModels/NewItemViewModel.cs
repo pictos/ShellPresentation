@@ -1,7 +1,5 @@
 ﻿using ShellPresentation.Models;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
@@ -27,10 +25,8 @@ namespace ShellPresentation.ViewModels
 
         public Command CancelCommand => new AsyncCommand(CancelCommandExecute);
 
-        async Task CancelCommandExecute()
-        {
-            await Navigation.GoToAsync("..").ConfigureAwait(false);
-        }
+        Task CancelCommandExecute() =>
+            Navigation.GoToAsync("..");
 
         public Command AddCommand => new AsyncCommand(AddCommandExecute);
 
@@ -39,12 +35,11 @@ namespace ShellPresentation.ViewModels
             var item = new Item
             {
                 Text = ItemName,
-                Description = ItemDescription
+                Description = ItemDescription,
+                Id = Guid.NewGuid().ToString()
             };
-            //MessagingCenter.Send(this, "AddItem", item);
 
             await Navigation.GoToAsync("..", item).ConfigureAwait(false);
-
         }
 
         public NewItemViewModel()

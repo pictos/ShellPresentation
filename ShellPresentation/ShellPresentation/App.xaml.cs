@@ -1,9 +1,5 @@
-﻿using System;
-using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
+﻿using Xamarin.Forms;
 using ShellPresentation.Services;
-using ShellPresentation.Views;
-using Xamarin.Essentials;
 
 namespace ShellPresentation
 {

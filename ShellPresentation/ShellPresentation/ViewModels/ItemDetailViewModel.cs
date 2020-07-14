@@ -1,5 +1,4 @@
-﻿using System;
-
+﻿
 using ShellPresentation.Models;
 
 namespace ShellPresentation.ViewModels

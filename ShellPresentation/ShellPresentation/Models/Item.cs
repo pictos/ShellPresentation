@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace ShellPresentation.Models
+﻿namespace ShellPresentation.Models
 {
     public class Item
     {

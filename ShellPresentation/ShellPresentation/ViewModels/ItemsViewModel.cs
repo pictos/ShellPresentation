@@ -1,4 +1,4 @@
-﻿                        using System;
+﻿using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 
 using ShellPresentation.Models;
-using ShellPresentation.Views;
 
 namespace ShellPresentation.ViewModels
 {
@@ -22,26 +21,19 @@ namespace ShellPresentation.ViewModels
             Items = new ObservableCollection<Item>();
             LoadItemsCommand = new AsyncCommand(ExecuteLoadItemsCommand);
             AddItemCommand = new AsyncCommand(ExecuteAddItemCommand);
-
-            MessagingCenter.Subscribe<NewItemViewModel, Item>(this, "AddItem", async (obj, item) =>
-            {
-                var newItem = item as Item;
-                Items.Add(newItem);
-                await DataStore.AddItemAsync(newItem);
-            });
         }
 
         public override async Task BackAsync(object args)
         {
-            var newItem = args as Item;
+            if(!(args is Item newItem))
+                return;
+            
             Items.Add(newItem);
             await DataStore.AddItemAsync(newItem);
         }
 
-        async Task ExecuteAddItemCommand()
-        {
-            await Navigation.GoToAsync(nameof(NewItemViewModel)).ConfigureAwait(false);
-        }
+        Task ExecuteAddItemCommand() =>
+            Navigation.GoToAsync(nameof(NewItemViewModel));
 
         async Task ExecuteLoadItemsCommand()
         {
@@ -50,7 +42,7 @@ namespace ShellPresentation.ViewModels
             try
             {
                 Items.Clear();
-                var items = await DataStore.GetItemsAsync(true);
+                var items = await DataStore.GetItemsAsync(true).ConfigureAwait(false);
                 foreach (var item in items)
                 {
                     Items.Add(item);

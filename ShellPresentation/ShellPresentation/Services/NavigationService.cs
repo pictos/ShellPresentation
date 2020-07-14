@@ -1,16 +1,14 @@
 ﻿using ShellPresentation.ViewModels;
 using ShellPresentation.Views;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace ShellPresentation.Services
 {
-    public class NavigationService
+    public sealed class NavigationService
     {
         static readonly Lazy<NavigationService> navigation =
             new Lazy<NavigationService>(() => new NavigationService());
@@ -28,7 +26,7 @@ namespace ShellPresentation.Services
             Shell.Navigating += OnShellNavigating;
         }
 
-        // não funciona com métodos assíncronos 
+        // doesn't work with async methods
         void OnShellNavigating(object sender, ShellNavigatingEventArgs e)
         {
             var current = e.Current;
@@ -59,7 +57,7 @@ namespace ShellPresentation.Services
             await Shell.GoToAsync(url);
             if (url == ".." || url.Contains("\\") || url.Contains("/"))
             {
-                await (CurrentPage.BindingContext as BaseViewModel).BackAsync(args);
+                await (CurrentPage.BindingContext as BaseViewModel).BackAsync(args).ConfigureAwait(false);
                 return;
             }
             var vm = CreateViewModel(url);
@@ -71,7 +69,7 @@ namespace ShellPresentation.Services
         {
             await Shell.GoToAsync(state);
             var vm = CreateViewModel(state.Location.OriginalString.Split('/').Last());
-            await Task.Delay(100); // aguardar a pagina carregar
+            await Task.Delay(100); // give the Page a little time..
             CurrentPage.BindingContext = vm;
             await vm.InitAsync(args).ConfigureAwait(false);
         }
