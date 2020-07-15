@@ -24,8 +24,8 @@ namespace ShellPresentation.ViewModels
         public override Task InitAsync(object args)
         {
             var user = (User)args;
-            Name = user.UserName;
-            Age = user.UserAge;
+            Name = user?.UserName;
+            Age = user?.UserAge ?? 0;
             OnPropertyChanged(nameof(Name));
             OnPropertyChanged(nameof(Age));
 
