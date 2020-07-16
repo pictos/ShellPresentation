@@ -42,7 +42,7 @@ namespace ShellPresentation.ViewModels
             try
             {
                 Items.Clear();
-                var items = await DataStore.GetItemsAsync(true).ConfigureAwait(false);
+                var items = await DataStore.GetItemsAsync(true);
                 foreach (var item in items)
                 {
                     Items.Add(item);
@@ -57,5 +57,6 @@ namespace ShellPresentation.ViewModels
                 IsBusy = false;
             }
         }
+
     }
 }

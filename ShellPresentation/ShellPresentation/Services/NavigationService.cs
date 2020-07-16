@@ -30,19 +30,23 @@ namespace ShellPresentation.Services
         void OnShellNavigating(object sender, ShellNavigatingEventArgs e)
         {
             var current = e.Current;
+            #region LetMeGO
             if (current.Location.OriginalString.Contains("MainViewModel"))
             {
                 var vm = CurrentPage.BindingContext as MainViewModel;
                 if (!vm.IsChecked)
                     e.Cancel();
-            }
+            } 
+            #endregion
         }
 
         void OnShellNavigated(object sender, ShellNavigatedEventArgs e)
         {
             var page = Shell.CurrentItem.CurrentItem as ShellSection;
             CurrentPage = ((IShellSectionController)page).PresentedPage;
+            #region Secret
             Preferences.Set("LastKnownUrl", e.Current.Location.OriginalString);
+            #endregion
         }
 
         void RegisterRoutes()
@@ -50,16 +54,19 @@ namespace ShellPresentation.Services
             Routing.RegisterRoute(nameof(InfoViewModel), typeof(InfoPage));
             Routing.RegisterRoute(nameof(NewItemViewModel), typeof(NewItemPage));
             Routing.RegisterRoute(nameof(FinalViewModel), typeof(FinalPage));
+            Routing.RegisterRoute(nameof(ItemDetailViewModel), typeof(ItemDetailPage));
         }
 
         public async Task GoToAsync(string url, object args = null)
         {
             await Shell.GoToAsync(url);
+            #region NavigatingBack
             if (url == ".." || url.Contains("\\") || url.Contains("/"))
             {
                 await (CurrentPage.BindingContext as BaseViewModel).BackAsync(args).ConfigureAwait(false);
                 return;
-            }
+            } 
+            #endregion
             var vm = CreateViewModel(url);
             CurrentPage.BindingContext = vm;
             await vm.InitAsync(args).ConfigureAwait(false);

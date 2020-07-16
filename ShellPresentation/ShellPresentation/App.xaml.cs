@@ -18,10 +18,10 @@ namespace ShellPresentation
         protected override async void OnStart()
         {
             var nav = NavigationService.Current;
-            //var lastLocation = Xamarin.Essentials.Preferences.Get("LastKnownUrl", string.Empty);
-            //if (IsNullOrEmpty(lastLocation))
-            //    return;
-            //await nav.GoToAsync(new ShellNavigationState(lastLocation));
+            var lastLocation = Xamarin.Essentials.Preferences.Get("LastKnownUrl", string.Empty);
+            if (IsNullOrEmpty(lastLocation))
+                return;
+            await nav.GoToAsync(new ShellNavigationState(lastLocation));
         }
 
         protected override void OnSleep()

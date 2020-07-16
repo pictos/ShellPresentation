@@ -4,6 +4,7 @@ using Xamarin.Forms;
 
 using ShellPresentation.Models;
 using ShellPresentation.ViewModels;
+using ShellPresentation.Services;
 
 namespace ShellPresentation.Views
 {
@@ -25,12 +26,8 @@ namespace ShellPresentation.Views
         {
             var layout = (BindableObject)sender;
             var item = (Item)layout.BindingContext;
-            await Navigation.PushAsync(new ItemDetailPage(new ItemDetailViewModel(item)));
-        }
 
-        async void AddItem_Clicked(object sender, EventArgs e)
-        {
-            await Navigation.PushModalAsync(new NavigationPage(new NewItemPage()));
+            await NavigationService.Current.GoToAsync($"{nameof(ItemDetailViewModel)}", item).ConfigureAwait(false);
         }
 
         protected override void OnAppearing()
