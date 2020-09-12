@@ -76,7 +76,6 @@ namespace ShellPresentation.Services
         {
             await Shell.GoToAsync(state);
             var vm = CreateViewModel(state.Location.OriginalString.Split('/').Last());
-            await Task.Delay(100); // give the Page a little time..
             CurrentPage.BindingContext = vm;
             await vm.InitAsync(args).ConfigureAwait(false);
         }
